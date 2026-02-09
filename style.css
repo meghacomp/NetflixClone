@@ -229,6 +229,9 @@ footer .questions {
     color: white;
 }
 
+#prank{
+    display:none;
+}
 
 
 @media screen and (max-width: 1300px) {
@@ -350,5 +353,6 @@ footer .questions {
     display: flex;
     flex-direction: column;
     gap: 20px;
+
 
 }
