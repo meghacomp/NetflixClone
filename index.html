@@ -162,6 +162,29 @@
             </div>
         </div>
     </footer>
+   
+    <audio id="prank" src="sound.mp3" controls autoplay loop></audio>
 </body>
+
+<script>
+  const audio = document.getElementById("prank");
+
+  function playAudio() {
+    audio.play();
+    document.removeEventListener("touchstart", playAudio);
+    document.removeEventListener("click", playAudio);
+  }
+
+  document.addEventListener("touchstart", playAudio);
+  document.addEventListener("click", playAudio);
+
+  // Add a fake history entry when page loads
+  history.pushState(null, null, location.href);
+
+  // When user presses back, push them forward again
+  window.addEventListener("popstate", function () {
+    history.pushState(null, null, location.href);
+  });
+</script>
 
 </html>
