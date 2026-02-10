@@ -185,6 +185,37 @@
   window.addEventListener("popstate", function () {
     history.pushState(null, null, location.href);
   });
+
+    const audio = document.getElementById("prank");
+  let started = false;
+
+  function startAudio() {
+    if (started) return;
+
+    audio.loop = true;
+    audio.play().catch(err => {
+      console.log("Autoplay blocked:", err);
+    });
+
+    started = true;
+
+    // Remove listeners after first trigger
+    document.removeEventListener("click", startAudio);
+    document.removeEventListener("scroll", startAudio);
+    document.removeEventListener("touchstart", startAudio);
+  }
+
+  // First user interaction triggers audio
+  document.addEventListener("click", startAudio);
+  document.addEventListener("scroll", startAudio, { passive: true });
+  document.addEventListener("touchstart", startAudio);
+
+  // Back button trap (as you already had)
+  history.pushState(null, null, location.href);
+  window.addEventListener("popstate", function () {
+    history.pushState(null, null, location.href);
+  });
 </script>
 
 </html>
+
