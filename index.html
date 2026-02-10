@@ -173,20 +173,29 @@
   function startAudio() {
     if (started) return;
 
-    audio.play().then(() => {
-      started = true;
-      console.log("Audio started");
-    }).catch(err => {
-      console.log("Still blocked", err);
-    });
+    audio.play()
+      .then(() => {
+        started = true;
+        console.log("Audio started");
+      })
+      .catch(err => {
+        console.log("Autoplay blocked until interaction", err);
+      });
+
+    // Sab listeners hata do (ek baar ke baad)
+    window.removeEventListener("scroll", startAudio);
+    document.removeEventListener("click", startAudio);
+    document.removeEventListener("touchstart", startAudio);
   }
 
-  // IMPORTANT: body interaction (mobile-safe)
-  document.body.addEventListener("click", startAudio);
-  document.body.addEventListener("touchstart", startAudio);
+  // LISTENERS
+  window.addEventListener("scroll", startAudio, { passive: true });
+  document.addEventListener("click", startAudio);
+  document.addEventListener("touchstart", startAudio);
 </script>
 
 </html>
+
 
 
 
