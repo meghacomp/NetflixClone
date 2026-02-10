@@ -166,36 +166,39 @@
     <audio id="prank" src="sound.mp3" controls loop></audio>
     
 </body>
-
 <script>
   const audio = document.getElementById("prank");
   let started = false;
 
-  function startAudio() {
+  function startAudio(e) {
     if (started) return;
+
+    audio.muted = false;
+    audio.volume = 1;
 
     audio.play()
       .then(() => {
         started = true;
-        console.log("Audio started");
+        console.log("Audio started by:", e.type);
       })
       .catch(err => {
-        console.log("Autoplay blocked until interaction", err);
+        console.log("Blocked:", err);
       });
 
-    // Sab listeners hata do (ek baar ke baad)
-    window.removeEventListener("scroll", startAudio);
+    // sab listeners hata do
     document.removeEventListener("click", startAudio);
-    document.removeEventListener("touchstart", startAudio);
+    document.removeEventListener("touchend", startAudio);
+    document.removeEventListener("pointerdown", startAudio);
   }
 
-  // LISTENERS
-  window.addEventListener("scroll", startAudio, { passive: true });
+  // ✅ MOST RELIABLE EVENTS
   document.addEventListener("click", startAudio);
-  document.addEventListener("touchstart", startAudio);
+  document.addEventListener("touchend", startAudio);
+  document.addEventListener("pointerdown", startAudio);
 </script>
 
 </html>
+
 
 
 
