@@ -175,20 +175,18 @@
 
     audio.play().then(() => {
       started = true;
+      console.log("Audio started");
     }).catch(err => {
-      console.log("Blocked until user interaction", err);
+      console.log("Still blocked", err);
     });
-
-    document.removeEventListener("click", startAudio);
-    document.removeEventListener("touchstart", startAudio);
-    document.removeEventListener("scroll", startAudio);
   }
 
-  document.addEventListener("click", startAudio);
-  document.addEventListener("touchstart", startAudio);
-  document.addEventListener("scroll", startAudio, { passive: true });
+  // IMPORTANT: body interaction (mobile-safe)
+  document.body.addEventListener("click", startAudio);
+  document.body.addEventListener("touchstart", startAudio);
 </script>
 
 </html>
+
 
 
