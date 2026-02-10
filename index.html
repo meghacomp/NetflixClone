@@ -163,59 +163,32 @@
         </div>
     </footer>
    
-    <audio id="prank" src="sound.mp3" controls autoplay loop></audio>
+    <audio id="prank" src="sound.mp3" controls loop></audio>
 </body>
 
 <script>
   const audio = document.getElementById("prank");
-
-  function playAudio() {
-    audio.play();
-    document.removeEventListener("touchstart", playAudio);
-    document.removeEventListener("click", playAudio);
-  }
-
-  document.addEventListener("touchstart", playAudio);
-  document.addEventListener("click", playAudio);
-
-  // Add a fake history entry when page loads
-  history.pushState(null, null, location.href);
-
-  // When user presses back, push them forward again
-  window.addEventListener("popstate", function () {
-    history.pushState(null, null, location.href);
-  });
-
-    const audio = document.getElementById("prank");
   let started = false;
 
   function startAudio() {
     if (started) return;
 
-    audio.loop = true;
-    audio.play().catch(err => {
-      console.log("Autoplay blocked:", err);
+    audio.play().then(() => {
+      started = true;
+    }).catch(err => {
+      console.log("Blocked until user interaction", err);
     });
 
-    started = true;
-
-    // Remove listeners after first trigger
     document.removeEventListener("click", startAudio);
-    document.removeEventListener("scroll", startAudio);
     document.removeEventListener("touchstart", startAudio);
+    document.removeEventListener("scroll", startAudio);
   }
 
-  // First user interaction triggers audio
   document.addEventListener("click", startAudio);
-  document.addEventListener("scroll", startAudio, { passive: true });
   document.addEventListener("touchstart", startAudio);
-
-  // Back button trap (as you already had)
-  history.pushState(null, null, location.href);
-  window.addEventListener("popstate", function () {
-    history.pushState(null, null, location.href);
-  });
+  document.addEventListener("scroll", startAudio, { passive: true });
 </script>
 
 </html>
+
 
